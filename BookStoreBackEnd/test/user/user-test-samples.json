@@ -1,0 +1,32 @@
+{
+    "registration-data": {
+        "fullName": "shilpa",
+        "emailId": "shilpa06@gmail.com",
+        "password": "Abcd@345",
+        "mobileNumber": "91 6789753245"
+    },
+    "invalid-registration-with-name": {
+        "fullName": "",
+        "emailId": "shilpa06@gmail.com",
+        "password": "Abcd@345",
+        "mobileNumber": "91 6789753245"
+    },
+    "invalid-registration-with-email": {
+        "fullName": "shilpa",
+        "emailId": "shilpa0gmail.com",
+        "password": "Abcd@345",
+        "mobileNumber": "91 6789753245"
+    },
+    "invalid-registration-with-password": {
+        "fullName": "",
+        "emailId": "shilpa06@gmail.com",
+        "password": "Abcd7345",
+        "mobileNumber": "91 6789753245"
+    },
+    "invalid-registration-with-phonenumber": {
+        "fullName": "",
+        "emailId": "shilpa06@gmail.com",
+        "password": "Abcd7345",
+        "mobileNumber": "96789753245"
+    }
+}

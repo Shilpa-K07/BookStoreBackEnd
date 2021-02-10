@@ -27,6 +27,8 @@ require('./app/routes/route')(app);
  * @description listen for requests
  * @param config.port is the port on which server is listening
  */
-app.listen(config.port, () => {
+var server = app.listen(config.port, () => {
   console.log('Server is listening on port '+config.port);
 });
+
+module.exports = server
