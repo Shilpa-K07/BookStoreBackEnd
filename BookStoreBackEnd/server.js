@@ -20,16 +20,13 @@ require('./config').set(process.env.NODE_ENV, app);
 // get config
 const config = require('./config').get();
 
-// get logger from config
-const { logger } = config;
-
 // require user routes
-require('./app/routes/route')(app)
+require('./app/routes/route')(app);
 
 /**
  * @description listen for requests
  * @param config.port is the port on which server is listening
  */
 app.listen(config.port, () => {
-  console.log("Server is listening on port "+config.port);
-})
+  console.log('Server is listening on port '+config.port);
+});

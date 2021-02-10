@@ -7,8 +7,8 @@
 * @since : 02/02/2021
 *
 **************************************************************************/
-const user= require('../controllers/user.js')
+const user= require('../controllers/user.js');
 module.exports = (app) => {
     // register user
-    app.post('/registration', user.register)
-}
+    app.post('/registration', user.register);
+};

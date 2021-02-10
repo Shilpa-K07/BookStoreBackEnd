@@ -8,8 +8,8 @@
 * @since : 10/02/2021
 *
 **************************************************************************/
-const userModel = require("../models/user");
-const util = require("../utility/util");
+const userModel = require('../models/user');
+const util = require('../utility/util');
 const config = require('../../config').get();
 const { logger } = config;
 
@@ -21,16 +21,15 @@ class UserService {
      */
     register = (userData, callBack) => {
         util.encryptData(userData.password, (error, encryptedData) => {
-            if (error)
-                throw new Error("Error while encrypting password")
-            userData.password = encryptedData
+            if (error){
+                logger.error('Error while encrypting password');
+                throw new Error('Error while encrypting password');
+            }
+            userData.password = encryptedData;
             userModel.save(userData, (error, data) => {
-                if (error)
-                    return callBack(error, null)
-                return callBack(null, data)
-            })
-        })
-
+                return error ? callBack(error, null) : callBack(null, data);
+            });
+        });
     }
 }
 module.exports = new UserService();

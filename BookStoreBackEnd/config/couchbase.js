@@ -14,14 +14,15 @@ var couchbase = require('couchbase');
 var cluster = new couchbase.Cluster(config.database.dbURL, {
     username: config.database.username,
     password: config.database.password,
-})
+});
 var bucket = cluster.bucket('book-store', (err) => {
     if (err) {
-        console.error('Got error : ', err)
+        console.error('Got error : ', err);
     }
-    else{
-        console.log('Successfully connected to couchbase')
-    }
-})
+});
+var collection = bucket.collection();
 
-module.exports.bucket = bucket
+module.exports = {
+    collection: collection,
+    bucket: bucket
+};

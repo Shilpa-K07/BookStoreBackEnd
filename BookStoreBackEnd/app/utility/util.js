@@ -18,12 +18,12 @@ class Util {
         * @var saltRounds is the number of rounds used for hashing
         */
     encryptData = (password, callBack) => {
-        logger.info('Encrypting password')
+        logger.info('Encrypting password');
         var saltRounds = 10;
         bcrypt.hash(password, saltRounds, (err, hash) => {
             if (err)
-                return callBack(err, null)
-            return callBack(null, hash)
+                return callBack(err, null);
+            return callBack(null, hash);
         });
     }
 }
