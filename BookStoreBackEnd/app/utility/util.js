@@ -1,5 +1,15 @@
+/*************************************************************************
+* Purpose : to provide methods which are most reusable
+*
+* @file : util.js
+* @author : Shilpa K <shilpa07udupi@gmail.com>
+* @version : 1.0
+* @since : 02/02/2021
+*
+**************************************************************************/
 const bcrypt = require('bcrypt');
-const logger = require('../logger/logger');
+const config = require('../../config').get();
+const { logger } = config;
 
 class Util {
     /**

@@ -1,30 +1,35 @@
+/*************************************************************************
+* Purpose : to configure appication
+*
+* @file : server.js
+* @author : Shilpa K <shilpa07udupi@gmail.com>
+* @version : 1.0
+* @since : 02/02/2021
+*
+**************************************************************************/
 const express = require('express');
-var couchbase = require('couchbase')
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const logger = require('./app/logger/logger');
 
 const app = express();
 app.use(bodyParser.json());
-var cluster = new couchbase.Cluster('couchbase://localhost', {
-  username: process.env.COUCH_USERNAME,
-  password:  process.env.COUCH_PASSWORD,
-})
-var bucket = cluster.bucket('book-store',  (err) => {
-    if (err) {
-      console.error('Got error: ', err)
-    }
-  } )
- 
-module.exports.bucket = bucket
+
+// set config
+require('./config').set(process.env.NODE_ENV, app);
+
+// get config
+const config = require('./config').get();
+
+// get logger from config
+const { logger } = config;
 
 // require user routes
-require('./app/routes/user')(app)
+require('./app/routes/route')(app)
 
 /**
  * @description listen for requests
- * @param process.env.PORT is the port number 3000
+ * @param config.port is the port on which server is listening
  */
-app.listen(process.env.PORT, () => {
-  logger.info("Server is listening on port ", process.env.PORT);
+app.listen(config.port, () => {
+  console.log("Server is listening on port "+config.port);
 })

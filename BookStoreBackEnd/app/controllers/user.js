@@ -1,8 +1,20 @@
+/*************************************************************************
+* Purpose : to recieve request from routes and forward it to service layer
+*
+* @file : user.js
+* @author : Shilpa K <shilpa07udupi@gmail.com>
+* @version : 1.0
+* @since : 10/02/2021
+*
+**************************************************************************/
 const userService = require('../services/user.js')
-const Joi = require('joi');
-const logger = require('../logger/logger');
+const validator = require('../utility/inputValidator').inputData;
+//const Joi = require('joi');
+const config = require('../../config').get();
+const { logger } = config;
+//const logger = require('../logger/logger');
 
-const emailPattern = Joi.string().trim()
+/* const emailPattern = Joi.string().trim()
     .regex(/^([0-9A-Za-z])+([-+._][0-9A-Za-z]+)*@([0-9A-Za-z])+[.]([a-zA-Z])+([.][A-Za-z]+)*$/)
     .required().messages({
         'string.pattern.base': 'Email Id should be in this pattern ex: abc@gmail.com',
@@ -32,14 +44,14 @@ const inputPattern = Joi.object({
     password: passwordPattern,
     mobileNumber: mobileNumberPattern
 })
-
+ */
 class UserController {
      /**
      * @description Registering new users
      * @method register is a service class method
      * @method validate validates inputs using Joi
      */
-    register = (req, res) => {
+     register = (req, res) => {
         try {
             const userData = {
                 fullName: req.body.fullName,
@@ -47,35 +59,23 @@ class UserController {
                 password: req.body.password,
                 mobileNumber: req.body.mobileNumber
             }
-            const validationResult = inputPattern.validate(userData)
-
+            const validationResult = validator.validate(userData)
             if (validationResult.error) {
-                const response = { success: false, message: validationResult.error.message };
-                return res.status(400).send(response);
+                return res.status(400).send({success: false, message: validationResult.error.message});
             }
 
             userService.register(userData, (error, data) => {
                 if (error) {
-                   /*  if (error.name === 'MongoError' && error.code === 11000) {
-                        logger.error("User with this email Id is alreday exists")
-                        const response = { success: false, message: "User with this email Id is alreday exists" };
-                        return res.status(409).send(response)
-                    } */
-
                     logger.error("Some error occured while registering")
-                    const response = { success: false, message: "Some error occured while registering" };
-                    return res.status(500).send(response)
+                    return res.status(500).send({ success: false, message: "Some error occured while registering" })
                 }
-
                 logger.info("Registration is done successfully !")
-                const response = { success: true, message: "Registration is done successfully !", data: data };
-                res.send(response)
+                res.send({ success: true, message: "Registration is done successfully !", data: data })
             })
         }
-        catch (error) {
+        catch (error) {console.log("error: "+error)
             logger.error("Some error occurred !")
-            const response = { success: false, message: "Some error occurred !" };
-            res.status(500).send(response)
+            res.status(500).send({ success: false, message: "Some error occurred !" })
         }
     }
 }
