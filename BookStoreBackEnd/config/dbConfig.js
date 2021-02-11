@@ -8,21 +8,24 @@
 *
 **************************************************************************/
 
-const config = require('./').get();
+const config = require('.').get();
 var couchbase = require('couchbase');
 
-var cluster = new couchbase.Cluster(config.database.dbURL, {
+var cluster = new couchbase.Cluster(config.database.dbURL/* , {
     username: config.database.username,
     password: config.database.password,
-});
-var bucket = cluster.bucket('book-store', (err) => {
+} */);
+cluster.authenticate(config.database.username, config.database.password);
+var bucket = cluster.openBucket('book-store', (err) => {
     if (err) {
         console.error('Got error : ', err);
     }
 });
-var collection = bucket.collection();
+var N1qlQuery = couchbase.N1qlQuery;
+//var collection = bucket.collection();
 
 module.exports = {
-    collection: collection,
-    bucket: bucket
+    //collection: collection,
+    bucket: bucket,
+    N1qlQuery: N1qlQuery
 };

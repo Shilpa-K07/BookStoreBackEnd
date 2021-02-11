@@ -5,7 +5,7 @@ module.exports = {
 		commonjs: true,
 	},
 	'parser': 'babel-eslint',
-	extends: ['eslint:recommended'],
+	//extends: ['eslint:recommended'],
 	'parserOptions': {
         'ecmaVersion': 2017,
         'sourceType': 'module',
@@ -19,7 +19,7 @@ module.exports = {
 		quotes: ['error', 'single'],
 		semi: ['error', 'always'],
 		'no-mixed-spaces-and-tabs': 'error',
-		'no-unused-vars': ['error', { 'vars': 'all', 'args': 'none'}]
+		//'no-unused-vars': ['error', { 'vars': 'all', 'args': 'none'}]
 	},
 };
 

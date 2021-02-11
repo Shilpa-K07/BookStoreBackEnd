@@ -15,58 +15,58 @@ chai.use(chaiHttp);
 let userData = require('./user-test-samples.json');
 
 describe('Registration', () => {
-	it('given proper details should do user registration',  () => {
-		chai.request(server)
-			.post('/registration')
-			.send(userData['registration-data'])
-			.end((err, res) => {
-				res.should.have.status(200);
-				res.body.should.be.a('object');
-				//setTimeout(done, 15000);
-			});
-	});
+    it('given proper details should do user registration', () => {
+        chai.request(server)
+            .post('/registration')
+            .send(userData['registration-data'])
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                //setTimeout(done, 15000);
+            });
+    });
 
-	it('given im proper name should not do register', (done) => {
-		chai.request(server)
-			.post('/registration')
-			.send(userData['invalid-registration-with-name'])
-			.end((err, res) => {
-				res.should.have.status(400);
-				res.body.should.be.a('object');
-				done();
-			});
-	});
+    it('given im proper name should not do register', (done) => {
+        chai.request(server)
+            .post('/registration')
+            .send(userData['invalid-registration-with-name'])
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a('object');
+                done();
+            });
+    });
 
     it('given im proper email should not do register', (done) => {
-		chai.request(server)
-			.post('/registration')
-			.send(userData['invalid-registration-with-email'])
-			.end((err, res) => {
-				res.should.have.status(400);
-				res.body.should.be.a('object');
-				done();
-			});
-	});
+        chai.request(server)
+            .post('/registration')
+            .send(userData['invalid-registration-with-email'])
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a('object');
+                done();
+            });
+    });
 
     it('given im proper password should not do register', (done) => {
-		chai.request(server)
-			.post('/registration')
-			.send(userData['invalid-registration-with-password'])
-			.end((err, res) => {
-				res.should.have.status(400);
-				res.body.should.be.a('object');
-				done();
-			});
-	});
+        chai.request(server)
+            .post('/registration')
+            .send(userData['invalid-registration-with-password'])
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a('object');
+                done();
+            });
+    });
 
     it('given im proper mobile number should not do register', (done) => {
-		chai.request(server)
-			.post('/registration')
-			.send(userData['invalid-registration-with-phonenumber'])
-			.end((err, res) => {
-				res.should.have.status(400);
-				res.body.should.be.a('object');
-				done();
-			});
-	});
+        chai.request(server)
+            .post('/registration')
+            .send(userData['invalid-registration-with-phonenumber'])
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a('object');
+                done();
+            });
+    });
 });

@@ -33,6 +33,10 @@ class UserController {
 
             userService.register(userData, (error, data) => {
                 if (error) {
+                    if(error.message.includes('409')){
+                        logger.error('User exists');
+                        return res.status(409).send({ success: false, message: 'User exists' });
+                    }
                     logger.error('Some error occured while registering');
                     return res.status(500).send({ success: false, message: 'Some error occured while registering' });
                 }

@@ -23,6 +23,13 @@ const config = require('./config').get();
 // require user routes
 require('./app/routes/route')(app);
 
+// require swagger-ui and swagger.json
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./app/lib/api-docs.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
 /**
  * @description listen for requests
  * @param config.port is the port on which server is listening
@@ -31,4 +38,4 @@ var server = app.listen(config.port, () => {
   console.log('Server is listening on port '+config.port);
 });
 
-module.exports = server
+module.exports = server;

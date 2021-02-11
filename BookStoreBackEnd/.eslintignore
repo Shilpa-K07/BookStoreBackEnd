@@ -1,0 +1,7 @@
+*.log
+/lib
+node_modules
+logs
+.env
+test
+.nyc_output
