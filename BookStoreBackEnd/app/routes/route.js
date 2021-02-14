@@ -11,4 +11,7 @@ const user= require('../controllers/user.js');
 module.exports = (app) => {
     // register user
     app.post('/registration', user.register);
+
+    // user login
+    app.post('/login', user.login);
 };

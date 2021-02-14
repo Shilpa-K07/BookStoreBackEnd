@@ -21,7 +21,7 @@ class UserService {
      */
     register = (userData, callBack) => {
         util.encryptData(userData.password, (error, encryptedData) => {
-            if (error){
+            if (error) {
                 logger.error('Error while encrypting password');
                 throw new Error('Error while encrypting password');
             }
@@ -30,6 +30,31 @@ class UserService {
                 return error ? callBack(error, null) : callBack(null, data);
             });
         });
+    }
+
+    login = async (userLoginData) => {console.log('svc');
+        const result = await userModel.findOne(userLoginData);
+        console.log('service: ' + JSON.stringify(result));
+        if (error) {
+            logger.error('ERR:500-Some error occured while logging in');
+            return new Error('ERR:500-Some error occured while logging in');
+        }
+        else if (!data) {
+            logger.error('ERR:401-Authorization failed');
+            return new Error('ERR:401-Authorization failed');
+        }
+        else {
+            bcrypt.compare(userLoginData.password, data.password, (error, result) => {
+                if (result) {
+                    logger.info('Authorization success');
+                    const token = util.generateToken(data);
+                    data.token = token;
+                    return data;
+                }
+                logger.error('ERR:401-Authorization failed');
+                return new Error('ERR:401-Authorization failed');
+            });
+        }
     }
 }
 module.exports = new UserService();

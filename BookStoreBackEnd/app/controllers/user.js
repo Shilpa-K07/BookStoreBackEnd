@@ -8,7 +8,8 @@
 *
 **************************************************************************/
 const userService = require('../services/user.js');
-const validator = require('../utility/inputValidator').inputData;
+const validator = require('../utility/inputValidator').register;
+const loginValidator = require('../utility/inputValidator').login;
 const config = require('../../config').get();
 const { logger } = config;
 
@@ -49,6 +50,57 @@ class UserController {
             res.status(500).send({ success: false, message: 'Some error occurred !' });
         }
     }
+
+    /**
+	 * @description User login API
+	 * @method login is service class method
+	 */
+	login = async (req, res) => {console.log('ctr');
+		try {
+			const userLoginData = {
+				emailId: req.body.emailId,
+				password: req.body.password
+			};
+
+			const validationResult = loginValidator.validate(userLoginData);
+
+			if (validationResult.error) {
+				const response = { success: false, message: validationResult.error.message };
+				return res.status(400).send(response);
+			}
+
+			const result = await userService.login(userLoginData);
+            console.log('ctr: ' + JSON.stringify(result));
+			/* 	if (error) {
+					logger.error(error.message);
+					const response = { success: false, message: error.message };
+					if (error.message.includes('401'))
+						return res.status(401).send(response);
+					return res.status(500).send(response);
+				}
+				if (!data) {
+					const response = { success: false, message: 'Authorization failed' };
+					return res.status(401).send(response);
+				}
+				else {
+					const userData = {
+						emailId: data.emailId,
+						name: data.firstName + ' ' + data.lastName
+					};
+					const response = { success: true, message: 'Login Successfull !', token: data.token, data: userData };
+					logger.info('Login Successfull !');
+					req.session.isAuth = true;
+					req.session.token = data.token;
+					return res.status(200).send(response);
+				} */
+		}
+		catch (error) {console.log('error: '+error);
+			logger.error('Some error occurred !');
+			const response = { success: false, message: 'Some error occurred !' };
+			res.status(500).send(response);
+		}
+	}
+
 }
 
 module.exports = new UserController();

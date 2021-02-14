@@ -29,9 +29,14 @@ const Joi = require('joi');
         password: passwordPattern,
         mobileNumber: mobileNumberPattern
     });
+    const loginDetailsPattern = Joi.object({
+        emailId: emailPattern,
+        password: passwordPattern
+    });
 module.exports = {
-    inputData: inputPattern,
+    register: inputPattern,
     email: emailPattern,
     password: passwordPattern,
-    mobileNumber: mobileNumberPattern
+    mobileNumber: mobileNumberPattern,
+    login: loginDetailsPattern
 };
