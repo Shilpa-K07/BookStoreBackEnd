@@ -30,12 +30,17 @@ class UserModel {
         }
         else return callBack(new Error('ERR-409'), null);
       });
-   
+
   }
 
-  findOne = async (userData) => {console.log('mdl');
-    return await bucket.query(
-      N1qlQuery.fromString('SELECT * FROM `book-store` WHERE emailId=' + '"' + userData.emailId + '"'));
-    }
+  /**
+   * @description finding user for login
+   */
+  findOne = async (userData, callBack) => {
+    await bucket.query(
+      N1qlQuery.fromString('SELECT * FROM `book-store` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
+        return (err) ? callBack(err, null) : callBack(null, rows);
+      });
+  }
 }
 module.exports = new UserModel();

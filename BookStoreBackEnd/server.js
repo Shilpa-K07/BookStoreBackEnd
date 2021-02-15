@@ -20,6 +20,10 @@ require('./config').set(process.env.NODE_ENV, app);
 // get config
 const config = require('./config').get();
 
+// require cors
+var cors = require('cors');
+app.use(cors());
+
 // require user routes
 require('./app/routes/route')(app);
 

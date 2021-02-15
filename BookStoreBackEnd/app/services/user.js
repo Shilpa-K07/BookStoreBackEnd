@@ -12,6 +12,7 @@ const userModel = require('../models/user');
 const util = require('../utility/util');
 const config = require('../../config').get();
 const { logger } = config;
+const bcrypt = require('bcrypt');
 
 class UserService {
     /**
@@ -32,29 +33,29 @@ class UserService {
         });
     }
 
-    login = async (userLoginData) => {console.log('svc');
-        const result = await userModel.findOne(userLoginData);
-        console.log('service: ' + JSON.stringify(result));
+    login =  (userLoginData, callBack) => {
+        userModel.findOne(userLoginData, (error, data) => {
         if (error) {
             logger.error('ERR:500-Some error occured while logging in');
-            return new Error('ERR:500-Some error occured while logging in');
+            return callBack(new Error('ERR:401-Authorization failed'), null);
         }
         else if (!data) {
             logger.error('ERR:401-Authorization failed');
-            return new Error('ERR:401-Authorization failed');
+            return callBack(new Error('ERR:401-Authorization failed'), null);
         }
         else {
-            bcrypt.compare(userLoginData.password, data.password, (error, result) => {
+            bcrypt.compare(userLoginData.password, data[0]['book-store'].password,  async (error, result) => {
                 if (result) {
                     logger.info('Authorization success');
-                    const token = util.generateToken(data);
+                    const token =  await util.generateToken(data);
                     data.token = token;
-                    return data;
+                    return callBack(null, data);
                 }
                 logger.error('ERR:401-Authorization failed');
-                return new Error('ERR:401-Authorization failed');
+                return callBack(new Error('ERR:401-Authorization failed'), null);
             });
         }
+        });
     }
 }
 module.exports = new UserService();
