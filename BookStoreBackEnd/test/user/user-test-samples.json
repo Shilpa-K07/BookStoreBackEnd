@@ -28,5 +28,21 @@
         "emailId": "shilpa06@gmail.com",
         "password": "Abcd7345",
         "mobileNumber": "96789753245"
+    },
+    "login-data": {
+        "emailId": "shilpa07udupi@gmail.com",
+        "password": "abcd@123A"
+    },
+    "unauthorized-login": {
+        "emailId": "shilpa066@gmail.com",
+        "password": "Abcd@345"
+    },
+    "invalid-login-emailId": {
+        "emailId": "shilpa06gmail.com",
+        "password": "Abcd@345"
+    },
+    "invalid-login-password": {
+        "emailId": "shilpa06@gmail.com",
+        "password": "Abcd345"
     }
 }

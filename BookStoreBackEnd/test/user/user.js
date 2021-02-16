@@ -70,3 +70,45 @@ describe('Registration', () => {
             });
     });
 });
+
+describe.only('Login', () => {
+    it('given proper details should login', () => {
+        chai.request(server)
+            .post('/login')
+            .send(userData['login-data'])
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                //setTimeout(done, 15000);
+            });
+    });
+    it('given improper emailId should not login', (done) => {
+        chai.request(server)
+            .post('/login')
+            .send(userData['invalid-login-emailId'])
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a('object');
+                done();
+            });
+    });
+    it('given improper passsword should give error', (done) => {
+        chai.request(server)
+            .post('/login')
+            .send(userData['invalid-login-password'])
+            .end((err, res) => {
+                res.should.have.status(400);
+                res.body.should.be.a('object');
+                done();
+            });
+    });
+    it('given improper credentials should not login', () => {
+        chai.request(server)
+            .post('/login')
+            .send(userData['unauthorized-login'])
+            .end((err, res) => {
+                res.should.have.status(401);
+                res.body.should.be.a('object');
+            });
+    });
+})
