@@ -16,16 +16,24 @@ var cluster = new couchbase.Cluster(config.database.dbURL/* , {
     password: config.database.password,
 } */);
 cluster.authenticate(config.database.username, config.database.password);
-var bucket = cluster.openBucket('book-store', (err) => {
+var userBucket = cluster.openBucket('user', (err) => {
     if (err) {
         console.error('Got error : ', err);
     }
 });
+
+var bookBucket = cluster.openBucket('books', (err) => {
+    if (err) {
+        console.error('Got error : ', err);
+    }
+});
+
 var N1qlQuery = couchbase.N1qlQuery;
 //var collection = bucket.collection();
 
 module.exports = {
     //collection: collection,
-    bucket: bucket,
+    userBucket: userBucket,
+    bookBucket: bookBucket,
     N1qlQuery: N1qlQuery
 };

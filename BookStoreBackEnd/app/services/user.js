@@ -44,7 +44,7 @@ class UserService {
             return callBack(new Error('ERR:401-Authorization failed'), null);
         }
         else {
-            bcrypt.compare(userLoginData.password, data[0]['book-store'].password,  async (error, result) => {
+            bcrypt.compare(userLoginData.password, data[0]['user'].password,  async (error, result) => {
                 if (result) {
                     logger.info('Authorization success');
                     const token =  await util.generateToken(data);

@@ -8,10 +8,14 @@
 *
 **************************************************************************/
 const user= require('../controllers/user.js');
+const book = require('../controllers/book.js');
 module.exports = (app) => {
     // register user
     app.post('/registration', user.register);
 
     // user login
     app.post('/login', user.login);
+    
+    // add book
+    app.post('/addBook', book.addBook);
 };

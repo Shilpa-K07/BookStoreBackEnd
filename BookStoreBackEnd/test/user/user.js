@@ -79,7 +79,6 @@ describe.only('Login', () => {
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
-                //setTimeout(done, 15000);
             });
     });
     it('given improper emailId should not login', (done) => {

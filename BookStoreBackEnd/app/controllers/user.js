@@ -42,7 +42,7 @@ class UserController {
 					return res.status(500).send({ success: false, message: 'Some error occured while registering' });
 				}
 				logger.info('Registration is done successfully !');
-				res.status(200).send({ success: true, message: 'Registration is done successfully !', data: data });
+				res.status(200).send({ success: true, message: 'Registration is done successfully !'});
 			});
 		}
 		catch (error) {
@@ -81,8 +81,8 @@ class UserController {
 				}
 				else {
 					const userData = {
-						emailId: data[0]['book-store'].emailId,
-						name: data[0]['book-store'].fullName
+						emailId: data[0]['user'].emailId,
+						name: data[0]['user'].fullName
 					};
 					logger.info('Login Successfull !');
 					return res.status(200).send({ success: true, message: 'Login Successfull !', token: data.token, data: userData });

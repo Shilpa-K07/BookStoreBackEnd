@@ -7,7 +7,7 @@
 * @since : 10/02/2021
 *
 **************************************************************************/
-const bucket = require('../../config/dbConfig').bucket;
+const userBucket = require('../../config/dbConfig').userBucket;
 const N1qlQuery = require('../../config/dbConfig').N1qlQuery;
 const uuid = require('uuid').v4;
 const config = require('../../config').get();
@@ -21,24 +21,23 @@ class UserModel {
   save = (userData, callBack) => {
     logger.info('creating unique id');
     const id = uuid();
-    bucket.query(
-      N1qlQuery.fromString('SELECT * FROM `book-store` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
+    userBucket.query(
+      N1qlQuery.fromString('SELECT * FROM `user` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
         if (rows.length == 0) {
-          bucket.insert(id, userData, (error, result) => {
+          userBucket.insert(id, userData, (error, result) => {
             return error ? callBack(error, null) : callBack(null, result);
           });
         }
         else return callBack(new Error('ERR-409'), null);
       });
-
   }
 
   /**
    * @description finding user for login
    */
   findOne = async (userData, callBack) => {
-    await bucket.query(
-      N1qlQuery.fromString('SELECT * FROM `book-store` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
+    await userBucket.query(
+      N1qlQuery.fromString('SELECT * FROM `user` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
         return (err) ? callBack(err, null) : callBack(null, rows);
       });
   }

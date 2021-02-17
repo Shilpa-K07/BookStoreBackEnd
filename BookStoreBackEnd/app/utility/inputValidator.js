@@ -33,10 +33,31 @@ const Joi = require('joi');
         emailId: emailPattern,
         password: passwordPattern
     });
+    const bookInputPattern = Joi.object({
+        author: Joi.string().trim().regex(/^[a-zA-Z ]+$/).min(2).required().messages({
+            'string.pattern.base': 'author name should contain only characters.',
+            'string.min': 'author name must have minimum 2 characters.',
+            'string.empty': 'author name can not be empty'
+        }),
+        title: Joi.string().trim().required().messages({
+            'string.empty': 'title can not be empty'
+        }),
+        image: Joi.string().trim().required().messages({
+            'string.empty': 'image can not be empty'
+        }),
+        quantity: Joi.string().trim().required().messages({
+            'string.empty': 'quantity can not be empty'
+        }),
+        price: Joi.string().trim().required().messages({
+            'string.empty': 'price can not be empty'
+        }),
+        description: Joi.string().trim()
+    });
 module.exports = {
     register: inputPattern,
     email: emailPattern,
     password: passwordPattern,
     mobileNumber: mobileNumberPattern,
-    login: loginDetailsPattern
+    login: loginDetailsPattern,
+    book: bookInputPattern
 };
