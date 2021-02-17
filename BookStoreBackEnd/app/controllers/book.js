@@ -41,7 +41,32 @@ class BookController {
                 return res.status(200).send({ success: true, message: 'added book !'});
             });
         }
-        catch(error) {console.log(error);
+        catch(error) {
+            logger.error('Some error occurred !');
+			res.status(500).send({ success: false, message: 'Some error occurred !' });
+        }
+    }
+
+    /**
+	* @description retrieve all the books
+	* @method getBooks is a service class method
+	*/
+    getBooks = (req, res) => {
+        try{
+            bookService.getBooks((error, data) => {
+                if(error) {
+                    logger.error(error.message);
+                    return res.status(500).send({ success: false, message: error.message });
+                }
+                else if(data.length == 0){
+                    logger.error('Books not found');
+                    return res.status(404).send({ success: false, message: 'Books not found' });
+                }
+                logger.info('Successfully retrieved books !');
+                return res.status(200).send({ success: true, message: 'Successfully retrieved books !', data: data});
+            });
+        }
+        catch(error){
             logger.error('Some error occurred !');
 			res.status(500).send({ success: false, message: 'Some error occurred !' });
         }

@@ -17,5 +17,8 @@ module.exports = (app) => {
     app.post('/login', user.login);
     
     // add book
-    app.post('/addBook', book.addBook);
+    app.post('/book', book.addBook);
+
+    // get books
+    app.get('/book', book.getBooks);
 };

@@ -14,8 +14,18 @@ class Bookservice {
 	* @description add new book to book-store
 	* @method save is a model class method
 	*/
-    addBook = (bookData, callBack) => {console.log('svc');
+    addBook = (bookData, callBack) => {
         bookModel.save(bookData, (error, data) => {
+            return (error) ? callBack(error, null) : callBack(null, data);
+        });
+    }
+
+     /**
+	* @description retrieve all the books 
+	* @method get is a model class method
+	*/
+    getBooks = (callBack) => {
+        bookModel.get((error, data) => {
             return (error) ? callBack(error, null) : callBack(null, data);
         });
     }
