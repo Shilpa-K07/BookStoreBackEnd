@@ -104,7 +104,36 @@ class BookController {
             });
         }
         catch(error) {
+            logger.error('Some error occurred !');
+			res.status(500).send({ success: false, message: 'Some error occurred !' });
+        }
+    }
 
+        /**
+     * @description Update book
+     */
+    deleteBook = (req, res) => {
+        try {
+            const bookData = {
+                id: req.params.bookId
+			};
+            
+            bookService.deleteBook(bookData, (error, data) => {
+                if(error) {
+                    logger.error(error.message);
+                    return res.status(500).send({ success: false, message: error.message });
+                }
+                else if(data.length == 0) {
+                    logger.error('Book not found');
+                    return res.status(404).send({ success: false, message: 'Book not found' });
+                }
+                logger.info('deleted book!');
+                return res.status(200).send({ success: true, message: 'deleted book !'});
+            });
+        }
+        catch(error) {
+            logger.error('Some error occurred !');
+			res.status(500).send({ success: false, message: 'Some error occurred !' });
         }
     }
 }

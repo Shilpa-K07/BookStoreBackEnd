@@ -38,13 +38,28 @@ class BookModel {
      // update book in the books bucket
      update = async (bookData, callBack) => {
         logger.info('updating book');
-          await bookBucket.upsert( bookData.id , bookData, (error, books) => {
+          await bookBucket.get( bookData.id, (error, books) => {
             if(error)
                 return callBack(error, null);
             else if(books.length == 0)
                 return callBack(null, books);
             else
                 bookBucket.upsert( bookData.id , bookData, (error, result) => {
+                    return error ? callBack(error, null) : callBack(null, result);
+                    });
+            });
+    }
+
+     // delete book in the books bucket
+     delete = async (bookData, callBack) => {
+        logger.info('deleting book');
+          await bookBucket.get( bookData.id, (error, books) => {
+            if(error)
+                return callBack(error, null);
+            else if(books.length == 0)
+                return callBack(null, books);
+            else
+                bookBucket.remove( bookData.id , bookData, (error, result) => {
                     return error ? callBack(error, null) : callBack(null, result);
                     });
             });

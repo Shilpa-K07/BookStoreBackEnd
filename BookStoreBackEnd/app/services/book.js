@@ -39,6 +39,16 @@ class Bookservice {
             return (error) ? callBack(error, null) : callBack(null, data);
         });
     }
+
+     /**
+	* @description update book with particular id 
+	* @method update is a model class method
+	*/
+    deleteBook = (bookData, callBack) => {
+        bookModel.delete(bookData, (error, data) => {
+            return (error) ? callBack(error, null) : callBack(null, data);
+        });
+    }
 }
 
 module.exports = new Bookservice();

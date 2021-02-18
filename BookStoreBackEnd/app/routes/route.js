@@ -24,4 +24,7 @@ module.exports = (app) => {
 
     // update books
     app.put('/book/:bookId', book.updateBook);
+
+    // delete books
+    app.delete('/book/:bookId', book.deleteBook);
 };
