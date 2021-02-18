@@ -21,4 +21,7 @@ module.exports = (app) => {
 
     // get books
     app.get('/book', book.getBooks);
+
+    // update books
+    app.put('/book/:bookId', book.updateBook);
 };

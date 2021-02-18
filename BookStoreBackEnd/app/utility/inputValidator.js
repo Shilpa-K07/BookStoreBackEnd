@@ -52,7 +52,8 @@ const Joi = require('joi');
             'string.empty': 'price can not be empty'
         }),
         description: Joi.string().trim()
-    });
+    }).unknown(true);
+    
 module.exports = {
     register: inputPattern,
     email: emailPattern,

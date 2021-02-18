@@ -7,7 +7,7 @@
 * @since : 17/02/2021
 *
 **************************************************************************/
-const userBucket = require('../../config/dbConfig').bookBucket;
+const bookBucket = require('../../config/dbConfig').bookBucket;
 const N1qlQuery = require('../../config/dbConfig').N1qlQuery;
 const uuid = require('uuid').v4;
 const config = require('../../config').get();
@@ -21,7 +21,7 @@ class BookModel {
     save = async (bookData, callBack) => {
         logger.info('creating unique id');
         const id = uuid();
-        await userBucket.insert(id, bookData, (error, result) => {
+        await bookBucket.insert(id, bookData, (error, result) => {
             return error ? callBack(error, null) : callBack(null, result);
         });
     }
@@ -29,9 +29,24 @@ class BookModel {
     // retrieving books from books bucket
     get = async (callBack) => {
         logger.info('retrieving books');
-        await userBucket.query(
+        await bookBucket.query(
             N1qlQuery.fromString('SELECT * FROM `books`'), (err, rows) => {
                 return (err) ? callBack(err, null) : callBack(null, rows);
+            });
+    }
+
+     // update book in the books bucket
+     update = async (bookData, callBack) => {
+        logger.info('updating book');
+          await bookBucket.upsert( bookData.id , bookData, (error, books) => {
+            if(error)
+                return callBack(error, null);
+            else if(books.length == 0)
+                return callBack(null, books);
+            else
+                bookBucket.upsert( bookData.id , bookData, (error, result) => {
+                    return error ? callBack(error, null) : callBack(null, result);
+                    });
             });
     }
 }

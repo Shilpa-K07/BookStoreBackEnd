@@ -20,12 +20,22 @@ class Bookservice {
         });
     }
 
-     /**
+    /**
 	* @description retrieve all the books 
 	* @method get is a model class method
 	*/
     getBooks = (callBack) => {
         bookModel.get((error, data) => {
+            return (error) ? callBack(error, null) : callBack(null, data);
+        });
+    }
+
+    /**
+	* @description update book with particular id 
+	* @method update is a model class method
+	*/
+    updateBook = (bookData, callBack) => {
+        bookModel.update(bookData, (error, data) => {
             return (error) ? callBack(error, null) : callBack(null, data);
         });
     }

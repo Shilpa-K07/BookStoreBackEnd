@@ -38,12 +38,34 @@ class Util {
             emailId: user.emailId,
             userId: user.id
         },
-            process.env.SECRET_KEY_TOKEN,
+            process.env.SECRET_KEY_USER_TOKEN,
             {
                 expiresIn: '1h'
             });
         return token;
     }
+
+    /**
+	 * @description verify user by decoding token
+	 * @method jwt.verify decodes token
+	 * @param next calls next middleware function
+	 */
+	verifyAdmin = (req, res, next) => {
+		logger.info('Verifying user');
+		if (req.headers.token === undefined) {
+			logger.error('Incorrect token or token is expired');
+			return res.status(401).send({ success: false, message: 'Incotrrect token or token is expired' });
+		}
+		const token = req.headers.token;
+		return jwt.verify(token, process.env.SECRET_KEY_ADMIN_TOKEN, (error, decodeData) => {
+			if (error) {
+				logger.error('Incorrect token or token is expired');
+				return res.status(401).send({ success: false, message: 'Incorrect token or token is expired' });
+			}
+			req.decodeData = decodeData;
+			next();
+		});
+	}
 }
 
 module.exports = new Util();

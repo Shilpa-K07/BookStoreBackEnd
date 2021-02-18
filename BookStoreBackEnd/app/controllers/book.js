@@ -71,6 +71,42 @@ class BookController {
 			res.status(500).send({ success: false, message: 'Some error occurred !' });
         }
     }
+
+    /**
+     * @description Update book
+     */
+    updateBook = (req, res) => {
+        try {
+            const bookData = {
+                id: req.params.bookId,
+				author: req.body.author,
+				title: req.body.title,
+				image: req.body.image,
+				quantity: req.body.quantity,
+                price: req.body.price,
+                description: req.body.description
+			};
+            const validationResult = validator.validate(bookData);
+			if (validationResult.error) {
+				return res.status(400).send({ success: false, message: validationResult.error.message });
+			}
+            bookService.updateBook(bookData, (error, data) => {
+                if(error) {
+                    logger.error(error.message);
+                    return res.status(500).send({ success: false, message: error.message });
+                }
+                else if(data.length == 0) {
+                    logger.error('Book not found');
+                    return res.status(404).send({ success: false, message: 'Book not found' });
+                }
+                logger.info('updated book!');
+                return res.status(200).send({ success: true, message: 'updated book !'});
+            });
+        }
+        catch(error) {
+
+        }
+    }
 }
 
 module.exports = new BookController();
