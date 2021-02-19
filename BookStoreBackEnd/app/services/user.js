@@ -21,7 +21,7 @@ class UserService {
      * @method register is called from controller.It again calls save method of model
      * @method encryptData is usede to encrypt password
      */
-    register = (userData, callBack) => {
+    registerUser = (userData, callBack) => {
         util.encryptData(userData.password, (error, encryptedData) => {
             if (error) {
                 logger.error('Error while encrypting password');
@@ -30,6 +30,25 @@ class UserService {
             userData.password = encryptedData;
             userData.role = role.User; 
             userModel.save(userData, (error, data) => {
+                return error ? callBack(error, null) : callBack(null, data);
+            });
+        });
+    }
+
+     /**
+     * @description admin registration
+     * @method register is called from controller.It again calls save method of model
+     * @method encryptData is usede to encrypt password
+     */
+    registerAdmin = (adminData, callBack) => {
+        util.encryptData(adminData.password, (error, encryptedData) => {
+            if (error) {
+                logger.error('Error while encrypting password');
+                throw new Error('Error while encrypting password');
+            }
+            adminData.password = encryptedData;
+            adminData.role = role.Admin; 
+            userModel.save(adminData, (error, data) => {
                 return error ? callBack(error, null) : callBack(null, data);
             });
         });

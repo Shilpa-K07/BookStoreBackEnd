@@ -15,7 +15,7 @@ const { logger } = config;
 
 class UserModel {
   /**
-   * @description saving user data into buckets
+   * @description saving user/admin data into buckets
    *  @method insert is used to save data into bucket
    */
   save = (userData, callBack) => {

@@ -20,7 +20,7 @@ const Joi = require('joi');
         });
 
     const inputPattern = Joi.object({
-        fullName: Joi.string().trim().regex(/^[a-zA-Z]+$/).min(2).required().messages({
+        fullName: Joi.string().trim().regex(/^[a-zA-Z ]+$/).min(2).required().messages({
             'string.pattern.base': 'name should contain only characters.',
             'string.min': 'first name must have minimum 2 characters.',
             'string.empty': 'first name can not be empty'
