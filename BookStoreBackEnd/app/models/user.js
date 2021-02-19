@@ -23,15 +23,15 @@ class UserModel {
     const id = uuid();
     userBucket.query(
       N1qlQuery.fromString('SELECT * FROM `user` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
-        if(err)
+        if (err)
           return callBack(err, null);
-        else if(rows.length != 0) {
+        else if (rows.length != 0) {
           return callBack(new Error('ERR-409'), null);
         }
-        else 
-        userBucket.insert(id, userData, (error, result) => {
-          return error ? callBack(error, null) : callBack(null, result);
-        });
+        else
+          userBucket.insert(id, userData, (error, result) => {
+            return error ? callBack(error, null) : callBack(null, result);
+          });
       });
   }
 
@@ -39,10 +39,14 @@ class UserModel {
    * @description finding user for login
    */
   findOne = async (userData, callBack) => {
-    await userBucket.query(
-      N1qlQuery.fromString('SELECT * FROM `user` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
-        return (err) ? callBack(err, null) : callBack(null, rows);
-      });
+    var query = N1qlQuery.fromString('SELECT meta().id, * FROM `user` WHERE emailId=' + '"' + userData.emailId + '"');
+    await userBucket.query(query, (error, rows) => {
+      return (error) ? callBack(error, null) : callBack(null, rows);
+    });
+    /* N1qlQuery.fromString('SELECT meta(user).id FROM `user` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
+      console.log('rows: '+JSON.stringify(rows));
+      return (err) ? callBack(err, null) : callBack(null, rows);
+    }); */
   }
 }
 module.exports = new UserModel();

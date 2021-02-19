@@ -26,7 +26,8 @@ class BookController {
 				image: req.body.image,
 				quantity: req.body.quantity,
                 price: req.body.price,
-                description: req.body.description
+                description: req.body.description,
+                adminId: req.decodeData.userId
 			};
             const validationResult = validator.validate(bookData);
 			if (validationResult.error) {
@@ -36,6 +37,10 @@ class BookController {
                 if(error) {
                     logger.error(error.message);
                     return res.status(500).send({ success: false, message: error.message });
+                }
+                else if(data.length == 0) {
+                    logger.error('Authorization failed');
+                    return res.status(401).send({ success: false, message: 'Authorization failed' });
                 }
                 logger.info('added book!');
                 return res.status(200).send({ success: true, message: 'added book !'});
@@ -53,9 +58,12 @@ class BookController {
 	*/
     getBooks = (req, res) => {
         try{
-            bookService.getBooks((error, data) => {
+            const userId = req.decodeData.userId;
+            bookService.getBooks(userId, (error, data) => {
                 if(error) {
                     logger.error(error.message);
+                    if(error.message.includes('401'))
+                        return res.status(401).send({ success: false, message: error.message });
                     return res.status(500).send({ success: false, message: error.message });
                 }
                 else if(data.length == 0){
@@ -84,7 +92,8 @@ class BookController {
 				image: req.body.image,
 				quantity: req.body.quantity,
                 price: req.body.price,
-                description: req.body.description
+                description: req.body.description,
+                adminId: req.decodeData.userId
 			};
             const validationResult = validator.validate(bookData);
 			if (validationResult.error) {
@@ -93,6 +102,8 @@ class BookController {
             bookService.updateBook(bookData, (error, data) => {
                 if(error) {
                     logger.error(error.message);
+                    if(error.message.includes('401'))
+                        return res.status(401).send({ success: false, message: error.message });
                     return res.status(500).send({ success: false, message: error.message });
                 }
                 else if(data.length == 0) {
@@ -115,12 +126,15 @@ class BookController {
     deleteBook = (req, res) => {
         try {
             const bookData = {
-                id: req.params.bookId
+                id: req.params.bookId,
+                adminId: req.decodeData.userId
 			};
             
             bookService.deleteBook(bookData, (error, data) => {
                 if(error) {
                     logger.error(error.message);
+                    if(error.message.includes('401'))
+                        return res.status(401).send({ success: false, message: error.message });
                     return res.status(500).send({ success: false, message: error.message });
                 }
                 else if(data.length == 0) {

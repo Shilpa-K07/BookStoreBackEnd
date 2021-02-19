@@ -7,8 +7,9 @@
 * @since : 02/02/2021
 *
 **************************************************************************/
-const user= require('../controllers/user.js');
-const book = require('../controllers/book.js');
+const user= require('../controllers/user');
+const book = require('../controllers/book');
+const util = require('../utility/util');
 module.exports = (app) => {
     // register user
     app.post('/userRegistration', user.registerUser);
@@ -20,14 +21,14 @@ module.exports = (app) => {
     app.post('/login', user.login);
     
     // add book
-    app.post('/book', book.addBook);
+    app.post('/book', util.verifyRole, book.addBook);
 
     // get books
-    app.get('/book', book.getBooks);
+    app.get('/book', util.verifyToken, book.getBooks);
 
     // update books
-    app.put('/book/:bookId', book.updateBook);
+    app.put('/book/:bookId', util.verifyRole, book.updateBook);
 
     // delete books
-    app.delete('/book/:bookId', book.deleteBook);
+    app.delete('/book/:bookId', util.verifyRole, book.deleteBook);
 };

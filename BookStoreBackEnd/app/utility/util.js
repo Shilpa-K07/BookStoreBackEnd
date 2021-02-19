@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../../config').get();
 const { logger } = config;
+const role = require('../utility/role');
 
 class Util {
     /**
@@ -35,10 +36,11 @@ class Util {
     generateToken = (user) => {
         logger.info('Generating token');
         const token = jwt.sign({
-            emailId: user.emailId,
-            userId: user.id
+            emailId: user['user'].emailId,
+            userId: user.id,
+            role: user['user'].role
         },
-            process.env.SECRET_KEY_USER_TOKEN,
+            process.env.SECRET_LOGIN_TOKEN,
             {
                 expiresIn: '1h'
             });
@@ -46,23 +48,49 @@ class Util {
     }
 
     /**
+	 * @description verify admin by decoding token
+	 * @method jwt.verify decodes token
+	 * @param next calls next middleware function --exec \"npm run lint && node\"
+	 */
+	verifyRole = (req, res, next) => {
+		logger.info('Verifying role');
+		if (req.headers.token === undefined) {
+			logger.error('Incorrect token or token is expired');
+			return res.status(401).send({ success: false, message: 'Incotrrect token or token is expired' });
+		}
+		const token = req.headers.token;
+		return jwt.verify(token, process.env.SECRET_LOGIN_TOKEN, (error, decodeData) => {
+        if (error) {
+				logger.error('Incorrect token or token is expired');
+				return res.status(401).send({ success: false, message: 'Incorrect token or token is expired' });
+			}
+			else if(decodeData.role != role.Admin) {
+                logger.error('Authorization failed');
+				return res.status(401).send({ success: false, message: 'Authorization failed' });
+            }
+            req.decodeData = decodeData;
+			next();
+		});
+	}
+
+     /**
 	 * @description verify user by decoding token
 	 * @method jwt.verify decodes token
 	 * @param next calls next middleware function
 	 */
-	verifyAdmin = (req, res, next) => {
+	verifyToken = (req, res, next) => {
 		logger.info('Verifying user');
 		if (req.headers.token === undefined) {
 			logger.error('Incorrect token or token is expired');
 			return res.status(401).send({ success: false, message: 'Incotrrect token or token is expired' });
 		}
 		const token = req.headers.token;
-		return jwt.verify(token, process.env.SECRET_KEY_ADMIN_TOKEN, (error, decodeData) => {
-			if (error) {
+		return jwt.verify(token, process.env.SECRET_LOGIN_TOKEN, (error, decodeData) => {
+        if (error) {
 				logger.error('Incorrect token or token is expired');
 				return res.status(401).send({ success: false, message: 'Incorrect token or token is expired' });
 			}
-			req.decodeData = decodeData;
+            req.decodeData = decodeData;
 			next();
 		});
 	}

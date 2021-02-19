@@ -24,8 +24,8 @@ class Bookservice {
 	* @description retrieve all the books 
 	* @method get is a model class method
 	*/
-    getBooks = (callBack) => {
-        bookModel.get((error, data) => {
+    getBooks = (userId, callBack) => {
+        bookModel.get(userId, (error, data) => {
             return (error) ? callBack(error, null) : callBack(null, data);
         });
     }
