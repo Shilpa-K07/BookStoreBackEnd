@@ -23,12 +23,15 @@ class UserModel {
     const id = uuid();
     userBucket.query(
       N1qlQuery.fromString('SELECT * FROM `user` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
-        if (rows.length == 0) {
-          userBucket.insert(id, userData, (error, result) => {
-            return error ? callBack(error, null) : callBack(null, result);
-          });
+        if(err)
+          return callBack(err, null);
+        else if(rows.length != 0) {
+          return callBack(new Error('ERR-409'), null);
         }
-        else return callBack(new Error('ERR-409'), null);
+        else 
+        userBucket.insert(id, userData, (error, result) => {
+          return error ? callBack(error, null) : callBack(null, result);
+        });
       });
   }
 

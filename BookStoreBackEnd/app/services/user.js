@@ -13,6 +13,7 @@ const util = require('../utility/util');
 const config = require('../../config').get();
 const { logger } = config;
 const bcrypt = require('bcrypt');
+const role = require('../utility/role');
 
 class UserService {
     /**
@@ -27,6 +28,7 @@ class UserService {
                 throw new Error('Error while encrypting password');
             }
             userData.password = encryptedData;
+            userData.role = role.User; 
             userModel.save(userData, (error, data) => {
                 return error ? callBack(error, null) : callBack(null, data);
             });
