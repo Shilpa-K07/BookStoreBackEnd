@@ -53,7 +53,7 @@ const Joi = require('joi');
         price: Joi.string().trim().required().messages({
             'string.empty': 'price can not be empty'
         }),
-        description: Joi.string().trim()
+        description: Joi.string().trim().allow("")
     }).unknown(true);
     
 module.exports = {

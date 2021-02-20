@@ -1,6 +1,10 @@
 {
-    "book-id": "8dbe2c0b-598d-47b7-a15c-284a885fb401",
-    "valid-token": "",
+    "book-id":{
+        "id-to-update": "a2d3f5a4-9388-40a0-9186-7e25995ecd7e",
+        "id-to-delete": "b7f5f2b2-c6d2-45b3-bc96-6bf747c156b3",
+        "non-exist-id": "8dbe2c0b-598d-47b7-a15c-284a885fb401"
+    } ,
+    "valid-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoic2hpbHBha3VuZGFwdXI3QGdtYWlsLmNvbSIsInVzZXJJZCI6IjRiZDdjYjk1LWM2MDEtNDQyYS05ZWUxLTQxNmMxYTQ4YjVhNyIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTYxMzgyOTY1MCwiZXhwIjoxNjEzODMzMjUwfQ.agwF19Pc1kZ7HjHLpNPjBM9RGAypQ3B-zGVlpvrcagw",
     "invalid-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoic2hpbHBhMDd1ZHVwaUBnbWFpbC5jb20iLCJ1c2VySWQiOiJjY2ZjZjU2ZC00NDhlLTRkYjQtODZhOC1jMWE2M2YzZjMyYWEiLCJpYXQiOjE2MTM3NTgyNDIsImV4cCI6MTYxMzc2MTg0Mn0.Ti2u9-9qVNk_Y4BErq-nWCoCo9kYobpMD-huKjPx1HI",
     "book-data": {
         "author": "Dan Brown",

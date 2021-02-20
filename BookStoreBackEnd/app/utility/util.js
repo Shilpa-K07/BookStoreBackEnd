@@ -63,7 +63,7 @@ class Util {
 				logger.error('Incorrect token or token is expired');
 				return res.status(401).send({ success: false, message: 'Incorrect token or token is expired' });
 			}
-			else if(decodeData.role != role.Admin) {
+			else if(decodeData.role != 'Admin') {
                 logger.error('Authorization failed');
 				return res.status(401).send({ success: false, message: 'Authorization failed' });
             }
