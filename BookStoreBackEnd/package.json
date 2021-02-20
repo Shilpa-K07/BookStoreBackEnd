@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha",
-    "start": "nodemon server.js --exec \"npm run lint && node\"",
+    "start": "nodemon server.js",
     "start:dev": "nodemon server.js NODE_ENV=devlopment",
     "start:prod": "nodemon server.js NODE_ENV=production",
     "lint": "eslint **/*.js",

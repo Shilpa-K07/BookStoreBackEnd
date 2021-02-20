@@ -12,10 +12,10 @@ const book = require('../controllers/book');
 const util = require('../utility/util');
 module.exports = (app) => {
     // register user
-    app.post('/userRegistration', user.registerUser);
+    app.post('/userRegistration', util.addRole('User'), user.register);
 
     // register admin
-    app.post('/adminRegistration', user.registerAdmin);
+    app.post('/adminRegistration', util.addRole('Admin'), user.register);
 
     // user login
     app.post('/login', user.login);

@@ -28,11 +28,13 @@ const Joi = require('joi');
         emailId: emailPattern,
         password: passwordPattern,
         mobileNumber: mobileNumberPattern
-    });
+    }).unknown(true);
+
     const loginDetailsPattern = Joi.object({
         emailId: emailPattern,
         password: passwordPattern
-    });
+    }).unknown(true);
+    
     const bookInputPattern = Joi.object({
         author: Joi.string().trim().regex(/^[a-zA-Z ]+$/).min(2).required().messages({
             'string.pattern.base': 'author name should contain only characters.',

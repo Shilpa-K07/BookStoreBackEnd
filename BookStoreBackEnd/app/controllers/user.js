@@ -19,20 +19,21 @@ class UserController {
 	* @method register is a service class method
 	* @method validate validates inputs using Joi
 	*/
-	registerUser = (req, res) => {
+	register = (req, res) => {
 		try {
 			const userData = {
 				fullName: req.body.fullName,
 				emailId: req.body.emailId,
 				password: req.body.password,
-				mobileNumber: req.body.mobileNumber
+				mobileNumber: req.body.mobileNumber,
+				role: req.role
 			};
 			const validationResult = validator.validate(userData);
 			if (validationResult.error) {
 				return res.status(400).send({ success: false, message: validationResult.error.message });
 			}
 
-			userService.registerUser(userData, (error, data) => {
+			userService.register(userData, (error, data) => {
 				if (error) {
 					if (error.message.includes('409')) {
 						logger.error('User exists');
@@ -42,44 +43,7 @@ class UserController {
 					return res.status(500).send({ success: false, message: 'Some error occured while registering' });
 				}
 				logger.info('Registration is done successfully !');
-				res.status(200).send({ success: true, message: 'Registration is done successfully !'});
-			});
-		}
-		catch (error) {
-			logger.error('Some error occurred !');
-			res.status(500).send({ success: false, message: 'Some error occurred !' });
-		}
-	}
-
-	/**
-	* @description Registering admin
-	* @method register is a service class method
-	* @method validate validates inputs using Joi
-	*/
-	registerAdmin = (req, res) => {
-		try {
-			const adminData = {
-				fullName: req.body.fullName,
-				emailId: req.body.emailId,
-				password: req.body.password,
-				mobileNumber: req.body.mobileNumber
-			};
-			const validationResult = validator.validate(adminData);
-			if (validationResult.error) {
-				return res.status(400).send({ success: false, message: validationResult.error.message });
-			}
-
-			userService.registerAdmin(adminData, (error, data) => {
-				if (error) {
-					if (error.message.includes('409')) {
-						logger.error('Admin exists');
-						return res.status(409).send({ success: false, message: 'User exists' });
-					}
-					logger.error('Some error occured while registering');
-					return res.status(500).send({ success: false, message: 'Some error occured while registering' });
-				}
-				logger.info('Admin Registration is done successfully !');
-				res.status(200).send({ success: true, message: 'Registration is done successfully !'});
+				res.status(200).send({ success: true, message: 'Registration is done successfully !' });
 			});
 		}
 		catch (error) {

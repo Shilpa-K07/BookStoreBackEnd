@@ -11,7 +11,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../../config').get();
 const { logger } = config;
-const role = require('../utility/role');
 
 class Util {
     /**
@@ -48,7 +47,7 @@ class Util {
     }
 
     /**
-	 * @description verify admin by decoding token
+	 * @description verify admin by decoding token ----exec \"npm run lint && node\"
 	 * @method jwt.verify decodes token
 	 * @param next calls next middleware function --exec \"npm run lint && node\"
 	 */
@@ -94,6 +93,16 @@ class Util {
 			next();
 		});
 	}
+    /**
+     * @description add role type
+     */
+    addRole = (role) => {
+        logger.info('Adding role');
+        return (req, res, next) => {
+            req.role = role;
+            next();
+        }
+    }
 }
 
 module.exports = new Util();
