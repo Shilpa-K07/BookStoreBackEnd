@@ -49,6 +49,16 @@ class Bookservice {
             return (error) ? callBack(error, null) : callBack(null, data);
         });
     }
+
+    /**
+	* @description add to book to bg
+	* @method addToBag is a model class method
+	*/
+    addToBag = (bookData, callBack) => {
+        bookModel.addToBag(bookData, (error, data) => {
+            return (error) ? callBack(error, null) : callBack(null, data);
+        });
+    }
 }
 
 module.exports = new Bookservice();

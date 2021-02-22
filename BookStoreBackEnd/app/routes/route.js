@@ -18,7 +18,10 @@ module.exports = (app) => {
     app.post('/adminRegistration', util.addRole('Admin'), user.register);
 
     // user login
-    app.post('/login', user.login);
+    app.post('/userLogin', user.login);
+
+    // admin login
+    app.post('/adminLogin', user.login);
     
     // add book
     app.post('/book', util.verifyRole, book.addBook);
@@ -31,4 +34,7 @@ module.exports = (app) => {
 
     // delete books
     app.delete('/book/:bookId', util.verifyRole, book.deleteBook);
+
+    // add to bag
+    app.put('/addToBag', util.verifyToken, book.addToBag);
 };

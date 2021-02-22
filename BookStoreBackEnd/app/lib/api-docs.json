@@ -5,12 +5,16 @@
         "title": "Book-Store",
         "description": "APIs"
     },
-    "host": "localhost:3000",
+    "host": "localhost:2000",
     "basePath": "/",
     "tags": [
         {
             "name": "User",
             "description": "API for User"
+        },
+        {
+            "name": "Books",
+            "description": "API for Book"
         }
     ],
     "schemes": [
@@ -23,7 +27,7 @@
         "application/json"
     ],
     "paths": {
-        "/registration": {
+        "/userRegistration": {
             "post": {
                 "tags": [
                     "User"
@@ -47,6 +51,161 @@
                         "description": "Registration is done successfully",
                         "schema": {
                             "$ref": "#/definitions/registration"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User login",
+                "parameters": [
+                    {
+                        "name": "user login",
+                        "in": "body",
+                        "description": "User login",
+                        "schema": {
+                            "$ref": "#/definitions/login"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfuuly logged in !",
+                        "schema": {
+                            "$ref": "#/definitions/login"
+                        }
+                    }
+                }
+            }
+        },
+        "/book": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Retrieve all the books",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "schema": {
+                            "$ref": "#/definitions/books"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Add book",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token"
+                    },
+                    {
+                        "name": "book",
+                        "in": "body",
+                        "description": "Add book",
+                        "schema": {
+                            "$ref": "#/definitions/book"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "added book !",
+                        "schema": {
+                            "$ref": "#/definitions/book"
+                        }
+                    }
+                }
+            }
+        },
+        "/book/{id}": {
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "token"
+                },
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the book that is to be updated or deleted",
+                    "type": "string"
+                }
+            ],
+            "delete": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Delete book with given ID",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token"
+                    },
+                    {
+                        "name": "book",
+                        "in": "body",
+                        "description": "Delete book"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Book deleted",
+                        "schema": {
+                            "$ref": "#/definitions/book"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Update book with given ID",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token"
+                    },
+                    {
+                        "name": "book",
+                        "in": "body",
+                        "description": "Book with new data",
+                        "schema": {
+                            "$ref": "#/definitions/book"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Book is updated",
+                        "schema": {
+                            "$ref": "#/definitions/book"
                         }
                     }
                 }
@@ -75,6 +234,59 @@
                     "type": "string"
                 }
             }
+        },
+        "login": {
+            "required": [
+                "emailId",
+                "password"
+            ],
+            "properties": {
+                "emailId": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "book": {
+            "required": [
+                "author",
+                "title",
+                "image",
+                "quantity",
+                "price"
+            ],
+            "properties": {
+                "title": {
+                    "in": "body",
+                    "type": "string"
+                },
+                "description": {
+                    "in": "body",
+                    "type": "string"
+                },
+                "author": {
+                    "in": "body",
+                    "type": "string"
+                },
+                "image": {
+                    "in": "body",
+                    "type": "string"
+                },
+                "quantity": {
+                    "in": "body",
+                    "type": "string"
+                },
+                "price": {
+                    "in": "body",
+                    "type": "string"
+                }
+            }
+        },
+        "books": {
+            "type": "array",
+            "$ref": "#/definitions/book"
         }
     }
 }

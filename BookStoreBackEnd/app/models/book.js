@@ -115,5 +115,43 @@ class BookModel {
             }
         });
     }
+
+    // add book to bag
+    addToBag = async (bookData, callBack) => {
+        await userBucket.get(bookData.userId.toString(), async (error, user) => {
+            if (error)
+                return callBack(error, null);
+            else if (user.length == 0)
+                return callBack(new Error('ERR-401'), null);
+            else {
+                logger.info('adding book to bag');
+                await bookBucket.get(bookData.bookId, async (error, books) => {
+                    console.log('book: ' + JSON.stringify(books));
+                    if (error)
+                        return callBack(error, null);
+                    else if (books.length == 0 || books.value.quantity < 0)
+                        return callBack(books, null);
+                    else {
+                       /*  const updateData = {
+                            userId: bookData.userId
+                        } */
+                        /*  bookBucket.upsert(bookData.bookId, updateData, (error, result) => {
+                             return error ? callBack(error, null) : callBack(null, result);
+                         }); */
+                         console.log('id: '+bookData.userId);
+                         console.log('id: '+bookData.bookId);
+                       // var query = N1qlQuery.fromString('UPDATE `books` USE KEYS ' +'"'+bookData.bookId+'"'+'SET userId= '+'"'+bookData.userId+'"');
+                       var query = N1qlQuery.fromString('UPDATE `books` USE KEYS ' +'"'+bookData.bookId+'"'+'SET userId=ARRAY_APPEND(userId,'+bookData.userId+')')
+                        console.log('query: '+query);
+                        //N1qlQuery("UPDATE 'books' USE KEYS "user_2343" SET email = "john.doe@gmail.com" RETURNING email");
+                       // 'UPDATE `books` SET userId=' + '"' + bookData.userId + '"' +'WHERE id='+ '"' + bookData.bookId + '"'
+                        await bookBucket.query(query, (error, rows) => {console.log('rows: '+JSON.stringify(rows));
+                            return (error) ? callBack(error, null) : callBack(null, rows);
+                        });
+                    }
+                })
+            }
+        })
+    }
 }
 module.exports = new BookModel();

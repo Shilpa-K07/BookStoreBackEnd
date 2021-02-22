@@ -150,6 +150,40 @@ class BookController {
 			res.status(500).send({ success: false, message: 'Some error occurred !' });
         }
     }
+
+    /**
+     * @description add book to bag
+     */
+    addToBag = (req, res) => {
+        try {
+            const bookData = {
+                bookId: req.body.bookId,
+                userId: req.decodeData.userId
+            }
+            bookService.addToBag(bookData, (error, data) => {console.log('data: '+JSON.stringify(data))
+                if(error) {
+                    logger.error(error.message);
+                    if(error.message.includes('401'))
+                        return res.status(401).send({ success: false, message: error.message });
+                    return res.status(500).send({ success: false, message: error.message });
+                }
+                else if(data.length == 0) {
+                    logger.error('book not found with this id');
+                    return res.status(404).send({ success: false, message: 'book not found with this id' });
+                }
+               /*  else if(data.books.quantity < 0) {
+                    logger.error('out of stcok');
+                    return res.status(404).send({ success: false, message: 'out of stock' });
+                } */
+                logger.info('added to bag !');
+                return res.status(200).send({ success: true, message: 'added to bag !'});
+            });
+        }
+        catch(error) {
+            logger.error('Some error occurred !');
+			res.status(500).send({ success: false, message: 'Some error occurred !' });
+        }
+    }
 }
 
 module.exports = new BookController();
