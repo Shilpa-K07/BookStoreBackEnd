@@ -138,11 +138,13 @@ class BookModel {
                         /*  bookBucket.upsert(bookData.bookId, updateData, (error, result) => {
                              return error ? callBack(error, null) : callBack(null, result);
                          }); */
-                         console.log('id: '+bookData.userId);
-                         console.log('id: '+bookData.bookId);
+                         
                        // var query = N1qlQuery.fromString('UPDATE `books` USE KEYS ' +'"'+bookData.bookId+'"'+'SET userId= '+'"'+bookData.userId+'"');
-                       var query = N1qlQuery.fromString('UPDATE `books` USE KEYS ' +'"'+bookData.bookId+'"'+'SET userId=ARRAY_APPEND(userId,'+bookData.userId+')')
-                        console.log('query: '+query);
+                       //var query = N1qlQuery.fromString('UPDATE `books` USE KEYS ' +'"'+bookData.bookId+'"'+'SET usersId=ARRAY_APPEND(usersId,"56677787")')
+                        
+                       var query = N1qlQuery.fromString('UPDATE `books` USE KEYS ' +'"'+bookData.bookId+'"'+'SET userId= ARRAY_INSERT(userId, 0, "56677787")')
+
+                     //var query = N1qlQuery.fromString('SELECT ARRAY_INSERT(usersId, 1, "12345") FROM `books` WHERE meta().id ='+'"' + bookData.bookId+'"')
                         //N1qlQuery("UPDATE 'books' USE KEYS "user_2343" SET email = "john.doe@gmail.com" RETURNING email");
                        // 'UPDATE `books` SET userId=' + '"' + bookData.userId + '"' +'WHERE id='+ '"' + bookData.bookId + '"'
                         await bookBucket.query(query, (error, rows) => {console.log('rows: '+JSON.stringify(rows));

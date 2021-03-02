@@ -21,8 +21,9 @@ class UserModel {
   save = (userData, callBack) => {
     logger.info('creating unique id');
     const id = uuid();
+    const query = 'SELECT * FROM `user` WHERE emailId=' + '"' + userData.emailId + '"';
     userBucket.query(
-      N1qlQuery.fromString('SELECT * FROM `user` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
+      N1qlQuery.fromString(query), (err, rows) => {
         if (err)
           return callBack(err, null);
         else if (rows.length != 0) {
@@ -43,10 +44,6 @@ class UserModel {
     await userBucket.query(query, (error, rows) => {
       return (error) ? callBack(error, null) : callBack(null, rows);
     });
-    /* N1qlQuery.fromString('SELECT meta(user).id FROM `user` WHERE emailId=' + '"' + userData.emailId + '"'), (err, rows) => {
-      console.log('rows: '+JSON.stringify(rows));
-      return (err) ? callBack(err, null) : callBack(null, rows);
-    }); */
   }
 }
 module.exports = new UserModel();
